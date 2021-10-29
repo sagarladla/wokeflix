@@ -1,12 +1,32 @@
 import "./featured.scss";
 import { InfoOutlined, PlayArrow } from "@mui/icons-material";
+import { FeatureType } from "../../types";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function Featured({ type }: any): JSX.Element {
+export default function Featured({ type }: FeatureType): JSX.Element {
+  const [content, setContent] = useState<any>({});
+  useEffect(() => {
+    const getRandomContent = async () => {
+      try {
+        const res = await axios.get(`/movies/random?type=${type}`, {
+          headers: {
+            token:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxN2FlZWE5ZjBkZGU1YzFiYzVmYTM2MyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzNTUxOTE4MSwiZXhwIjoxNjM1OTUxMTgxfQ.h20Js-aoLBHCfS9XzFB1c6jAAWoilGR3wHasYLZo__0",
+          },
+        });
+        setContent(res.data[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getRandomContent();
+  }, [type]);
   return (
     <div className="featured">
       {type && (
         <div className="category">
-          <span>{type === "movie" ? "Movies" : "Series"}</span>
+          <span>{type === "movies" ? "Movies" : "Series"}</span>
           <select name="genre" id="genre">
             <option>Genre</option>
             <option value="adventure">Adventure</option>
@@ -25,22 +45,10 @@ export default function Featured({ type }: any): JSX.Element {
           </select>
         </div>
       )}
-      <img
-        width="100%"
-        src="https://images.pexels.com/photos/6899260/pexels-photo-6899260.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-        alt=""
-      />
+      <img width="100%" src={content.img} alt="" />
       <div className="info">
-        <img
-          src="https://occ-0-1432-1433.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABUZdeG1DrMstq-YKHZ-dA-cx2uQN_YbCYx7RABDk0y7F8ZK6nzgCz4bp5qJVgMizPbVpIvXrd4xMBQAuNe0xmuW2WjoeGMDn1cFO.webp?r=df1"
-          alt=""
-        />
-        <span className="desc">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam culpa,
-          deserunt veritatis eaque soluta ut similique illo officiis reiciendis
-          dolores ducimus est repellat veniam aut consequatur numquam hic
-          aliquid fuga?
-        </span>
+        <img src={content.imgTitle} alt="" />
+        <span className="desc">{content.desc}</span>
         <div className="buttons">
           <button className="play">
             <PlayArrow />

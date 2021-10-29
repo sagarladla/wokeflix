@@ -2,23 +2,29 @@ import "./navbar.scss";
 import wflogo from "../../assets/wflogo.svg";
 import { ArrowDropDown, Notifications, Search } from "@mui/icons-material";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar(params: any): JSX.Element {
-  const [isScrolled, setIsScrolled] = useState<boolean>(false)
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
   window.onscroll = () => {
-    setIsScrolled(window.pageYOffset === 0 ? false : true)
-     return () => (window.onscroll = null);
-  }
-  console.log(isScrolled);
-  
+    setIsScrolled(window.pageYOffset === 0 ? false : true);
+    return () => (window.onscroll = null);
+  };
+
   return (
     <div className={isScrolled ? "navbar scrolled" : "navbar"}>
       <div className="container">
         <div className="left">
           <img src={wflogo} alt="Wokeflix Logo" />
-          <span>{"Homepage"}</span>
-          <span>{"Series"}</span>
-          <span>{"Movies"}</span>
+          <Link to="/" className="link">
+            <span>{"Homepage"}</span>
+          </Link>
+          <Link to="/series" className="link">
+            <span>{"Series"}</span>
+          </Link>
+          <Link to="/movies" className="link">
+            <span>{"Movies"}</span>
+          </Link>
           <span>{"New and Popular"}</span>
           <span>{"My List"}</span>
         </div>
